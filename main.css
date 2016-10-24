@@ -2,3 +2,18 @@
     fill: none;
     stroke: black;
 }
+
+.stock-line:hover {
+    stroke: pink;
+    stroke-width: 10px;
+}
+
+text {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.buffer {
+    opacity: 0;
+    stroke-width: 30px;
+}

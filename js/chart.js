@@ -6,6 +6,42 @@ var margin = 50,
     height = svg.attr('height') - 2 * margin,
     canvas = svg.append('g').attr('transform', 'translate(' + margin + ',' + margin + ')');
 
+// Invisible background rectangle for dragability
+canvas.append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('opacity', 0);
+
+var boxData = [];
+
+var drag = d3.drag();
+canvas.call(drag.on('start', startBox))
+    .call(drag.on('drag', dragBox));
+function startBox() {
+    boxData.push({startX: d3.event.x, startY: d3.event.y});
+    console.log(boxData);
+}
+function dragBox() {
+    boxData[boxData.length - 1].endX = d3.event.x;
+    boxData[boxData.length - 1].endY = d3.event.y;
+    updateBoxes();
+}
+
+function updateBoxes() {
+    var boxes = canvas.selectAll('.box')
+        .data(boxData);
+
+    boxes.enter()
+        .append('rect')
+        .attr('class', 'box')
+        .merge(boxes)
+        .attr('transform', 'translate(' + -margin + ',' + -margin + ')')
+        .attr('x', function(d) { return Math.min(d.startX, d.endX); })
+        .attr('y', function(d) { return Math.min(d.startY, d.endY); })
+        .attr('width', function(d) { return Math.abs(d.endX - d.startX); })
+        .attr('height', function(d) { return Math.abs(d.endY - d.startY); });
+}
+
 var parseDate = d3.timeParse('%m/%d/%y');
 function parse(d) {
     d.date = parseDate(d.date);
@@ -64,8 +100,28 @@ d3.csv('data/stock_data.csv', parse, function(error, data) {
         .enter()
         .append('g')
         .attr('class', 'stock-line')
-        .on('mouseover', function(d) { console.log(d.tickerSymbol); });
+        .on('mouseover', function(d) {
+            d3.select(this).select('text')
+                .style('visibility', 'visible');
+        })
+        .on('mouseout', function(d) {
+            d3.select(this).select('text')
+                .style('visibility', 'hidden');
+        });
 
     stockLines.append('path')
         .attr('d', function(d) { return line(d.values);});
+
+    stockLines.append('path')
+        .attr('class', 'buffer')
+        .attr('d', function(d) { return line(d.values);});
+
+    stockLines.append('text')
+        .attr('transform', function(d) {
+            return 'translate(' +
+                x(d.values[d.values.length -1].date) + ',' +
+                y(d.values[d.values.length -1].price) + ')';
+        })
+        .text(function(d) { return d.tickerSymbol; })
+        .style('visibility', 'hidden');
 });
