@@ -4,7 +4,7 @@
 var DRILLDOWN = window.location.search.includes('?drilldown');
 if (DRILLDOWN) {
     d3.select('#toggle-drilldown')
-        .attr('href', '/')
+        .attr('href', '')
         .text('Return to the original visualization.');
 }
 var WEEK = 1000 * 60 * 60 * 24 * 7; // ms in a week
