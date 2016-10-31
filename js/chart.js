@@ -61,17 +61,34 @@ function dragBox() {
 function resizeBox(d, i) {
     var currX = Math.max(0, Math.min(d3.event.x, width));
     var currY = Math.max(0, Math.min(d3.event.y, height));
-    if (Math.abs(d.endX - currX) < Math.abs(d.startX - currX)) {
-        d.endX = currX;
+    var startXDistance =  Math.abs(d.startX - currX),
+        endXDistance = Math.abs(d.endX - currX),
+        startYDistance = Math.abs(d.startY - currY),
+        endYDistance = Math.abs(d.endY - currY);
+    if (Math.min(startXDistance, endXDistance) > 20 ||
+        Math.min(startYDistance, endYDistance) > 20) {
+        d.startX += d3.event.dx;
+        d.startX = Math.max(0, Math.min(d.startX, width));
+        d.endX += d3.event.dx;
+        d.endX = Math.max(0, Math.min(d.endX, width));
+        d.startY += d3.event.dy;
+        d.startY = Math.max(0, Math.min(d.startY, width));
+        d.endY += d3.event.dy;
+        d.endY = Math.max(0, Math.min(d.endY, width));
     }
     else {
-        d.startX = currX;
-    }
-    if (Math.abs(d.endY - currY) < Math.abs(d.startY - currY)) {
-        d.endY = currY;
-    }
-    else {
-        d.startY = currY;
+        if (endXDistance < startXDistance) {
+            d.endX = currX;
+        }
+        else {
+            d.startX = currX;
+        }
+        if (endYDistance < startYDistance) {
+            d.endY = currY;
+        }
+        else {
+            d.startY = currY;
+        }
     }
     displayFilteredStocks();
     updateBoxes();
