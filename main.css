@@ -1,19 +1,77 @@
+/* general web page styling */
+
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+.row {
+    margin: 0 1em;
+    display: flex;
+    justify-content: space-around;
+}
+
+#toggle-drilldown {
+    font-size: 0.5em;
+}
+
+ul {
+    width: 50%;
+}
+
+li {
+    margin: 1em;
+}
+
+text.axis-label {
+    fill: black;
+}
+
 .stock-line {
     fill: none;
     stroke: black;
 }
 
-.stock-line:hover {
-    stroke: pink;
-    stroke-width: 10px;
-}
-
-text {
-    stroke: black;
-    stroke-width: 1px;
+.stock-line .main-line {
+    opacity: .1;
 }
 
 .buffer {
     opacity: 0;
-    stroke-width: 30px;
+    stroke-width: 5px;
+}
+
+text.stock-label {
+    visibility: hidden;
+    fill: black;
+    stroke-width: 0px;
+}
+
+.foreground .main-line {
+    stroke: green;
+    opacity: 1;
+}
+
+.foreground:hover .main-line {
+    stroke: pink;
+    stroke-width: 10px;
+}
+
+.foreground:hover text.stock-label {
+    visibility: visible;
+}
+
+.requested .main-line {
+    stroke: pink;
+    stroke-width: 10px;
+}
+
+.requested text.stock-label {
+    visibility: visible;
+}
+
+.box {
+    fill: blue;
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
 }

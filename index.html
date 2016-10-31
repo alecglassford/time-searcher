@@ -4,10 +4,27 @@
         <meta charset="utf-8">
         <title>Alec's Time Searcher</title>
         <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="js/chart.js" defer></script>
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
-        <svg width="1000", height="500"></svg>
-        <script src="js/chart.js"></script>
+        <div class="row">
+            <h1>Alec's Time Searcher: Stock prices over time</h1>
+            <p>
+                <a id="toggle-drilldown" href="?drilldown">
+                    View this visualization with an extra chart zoomed in on selected stocks (warning: slower).
+                </a>
+            </p>
+        </div>
+        <div class="row">
+            <p>Looking for a particular stock? Search its ticker symbol here: <input id="select-stock" type="text"></p>
+            <p><button id="clear-boxes">Click to clear all timeboxes (or press the escape key)</button></p>
+        </div>
+        <svg width="1400", height="700"></svg>
+        <ul>
+            <li>Drag boxes onto the grey canvas to filter stocks. Timeboxes select lines that are entirely within the box from left to right.</li>
+            <li>Resize boxes by dragging from anywhere within them. The data is filtered discretely by weekly price, so if a box's width becomes thinner than 1 week, it will not filter at all and disappear once you stop dragging.</li>
+            <li>Rolling over lines to view individual ticker symbols works better on <a href="?drilldown">the zoomed in chart</a> since there's less interference from other lines.</li>
+        </ul>
     </body>
 </html>
